@@ -42,7 +42,16 @@ module.exports = {
     config: (md) => {
       const { demoBlockPlugin } = require('vitepress-theme-demoblock')
       md.use(demoBlockPlugin, {
-        cssPreprocessor: 'less'
+        cssPreprocessor: 'less',
+        scriptImports: ["import * as ElementPlus from 'element-plus'"],
+        scriptReplaces: [
+          { searchValue: /const ({ defineComponent as _defineComponent }) = Vue/g,
+            replaceValue: 'const { defineComponent: _defineComponent } = Vue'
+          },
+          { searchValue: /import ({.*}) from 'element-plus'/g,
+            replaceValue: (s, s1) => `const ${s1} = ElementPlus`
+          }
+        ]
       })
     }
   }
